@@ -1,11 +1,17 @@
-# Coding-Preparation
-For Rest Callout"
+public class HttpRestCallout {
+    
+    public static void getUsersFromExternalSystem(){
+        
+        http httpObj = new Http();
+        
+        HttpRequest req = new HttpRequest();
+        req.setEndpoint('https://reqres.in/api/Users');
+        req.setHeader('Content-Type','application/json' );
+        req.setMethod('GET');
+   
+        HttpResponse response = httpObj.send(req);
+        system.debug(response.getBody());
+        
+    }
 
-Http http = new Http();
-HttpRequest newRequest = new HttpRequest();
-newRequest.setEndpoint("https://abc.com/animals");
-newRequest.setMethod('POST');
-newRequest.setHeader('Content-Type', 'application/json;charset= UTF-8');
-newRequest.setBody('{"name": "mightyMoose"}');
-HttpResponse res = http.send(newRequest);
-
+}
