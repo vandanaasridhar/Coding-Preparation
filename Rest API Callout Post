@@ -1,0 +1,17 @@
+public class HttpRestCallout {
+    
+    public static void getUsersFromExternalSystem(){
+        
+        http httpObj = new Http();
+        HttpRequest newRequest = new HttpRequest();
+        newRequest.setEndpoint('https://reqres.in/api/Users');
+        newRequest.setHeader('Content-Type', 'application/json');
+        newRequest.setMethod('POST');
+        newRequest.setBody('{"Name":"thisName","job": "leader"}');
+        HttpResponse getResponse = httpObj.send(newRequest);
+        system.debug(getResponse.getBody());
+        
+        
+    }
+
+}
