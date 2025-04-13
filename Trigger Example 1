@@ -1,33 +1,50 @@
-public trigger AccountTrigger on Account(after insert, after update){
- Set<id> newSet = new Set<id>(); 
-
-for(Account acc:Trigger.new){
-    newSet.add(acc.Id);
-  }
-
-Map<Id, Opportunity> newMap = new Map<Id, Opportunity>();
-for(AggregateResult sr:[Select Id, name, max(Amount) maxAmount, accountId from Opportunity where accountId 
-IN: newSet groupby accountId]){
-
-
-Decimal maxAmount = (Decimal) sr.get('maxAmount');
-String  recordId = (Id) sr.get('accountId');
-Opportunity opp =[Select id , name, amount, accId from Opportunity where accId =:recordId AND amount =maxAmount limit1];
-
-newMap.put(accountId, opp.Name);
-
+trigger UpdateAccountDescription on Opportunity (after insert, after update) {
+    // Step 1: Collect the Account Ids related to the Opportunities
+    Set<Id> accountIds = new Set<Id>();
+    
+    for (Opportunity opp : Trigger.new) {
+        if (opp.AccountId != null) {
+            accountIds.add(opp.AccountId);
+        }
+    }
+    
+    // Step 2: Query for Opportunities related to the accounts, fetching the one with the highest amount
+    Map<Id, Opportunity> maxAmountOpportunityMap = new Map<Id, Opportunity>();
+    
+    for (AggregateResult ar : [
+        SELECT AccountId, MAX(Amount) maxAmount
+        FROM Opportunity
+        WHERE AccountId IN :accountIds
+        GROUP BY AccountId
+    ]) {
+        Id accountId = (Id)ar.get('AccountId');
+        Decimal maxAmount = (Decimal)ar.get('maxAmount');
+        
+        // Query the Opportunity with the highest amount for each Account
+        Opportunity highestAmountOpp = [
+            SELECT Name, Amount, AccountId
+            FROM Opportunity
+            WHERE AccountId = :accountId AND Amount = :maxAmount
+            LIMIT 1
+        ];
+        
+        maxAmountOpportunityMap.put(accountId, highestAmountOpp);
+    }
+    
+    // Step 3: Prepare a list of Accounts to update their description
+    List<Account> accountsToUpdate = new List<Account>();
+    
+    for (Id accountId : maxAmountOpportunityMap.keySet()) {
+        Opportunity opp = maxAmountOpportunityMap.get(accountId);
+        
+        // Create an Account with updated description
+        Account acc = new Account(Id = accountId);
+        acc.Description = 'Top Opportunity: ' + opp.Name;
+        accountsToUpdate.add(acc);
+    }
+    
+    // Step 4: Update the Accounts
+    if (!accountsToUpdate.isEmpty()) {
+        update accountsToUpdate;
+    }
 }
-List<Account> newAccountList = new List<Account>();
-for(Account newAccount: newMap.keyset()){
-Account acc = new Account(newAccount.Id);
-acc.Description = 'Updated Description'+newMap.get(newAccount.Id).Name;
-newAccountList.add(acc);}
-
-if(!newAccountList.isEmpty()){
-     update newAccountList;
-}
-
-
-
-}
-
