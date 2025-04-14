@@ -1,0 +1,53 @@
+1. @api
+Program Code (childComponent.html)
+<template>
+    <lightning-card>
+    <div>
+        <h1>{headerLabel}</h1>
+    </div>  
+    </lightning-card>   
+</template>
+
+Program Code (childComponent.js)
+import { LightningElement, api } from 'lwc';
+export default class ChildComponent extends LightningElement {
+    @api headerLabel='This label is from Child Component';
+}
+
+Program Code (childComponent.js-meta.xml)
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>57.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__AppPage</target>
+        <target>lightning__HomePage</target>
+    </targets>
+</LightningComponentBundle>
+
+Program Code (parentComponent.html)
+<template>
+    <lightning-card>
+    <div>
+        <c-child-component header-label="This label is changed"></c-child-component>
+
+    </div>
+    </lightning-card>
+</template>
+
+Program Code (parentComponent.js)
+import { LightningElement } from 'lwc';
+
+export default class ParentComponent extends LightningElement {}
+
+Program Code (parentComponent.js-meta.xml)
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>57.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__AppPage</target>
+        <target>lightning__HomePage</target>
+    </targets>
+</LightningComponentBundle>
+
