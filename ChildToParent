@@ -1,0 +1,75 @@
+Program Code (childComponent4.html)
+<template>
+    <lightning-card>
+        <lightning-input label="Enter Name" onchange={handleChange}></lightning-input>
+        <lightning-button label="Click Here" onclick={handleClick}></lightning-button>
+
+    </lightning-card>
+    
+</template>
+
+Program Code (childComponent4.js)
+import { LightningElement } from 'lwc';
+
+export default class ChildComponent4 extends LightningElement {
+    name='';
+
+    handleChange(event)
+    {
+        this.name=event.target.value;
+    }
+
+    handleClick(event)
+    {
+        const searchEvent=new CustomEvent('getsearchevent',{detail:this.name});
+        this.dispatchEvent(searchEvent);
+    }
+}
+
+Program Code (childComponent4.js-meta.xml)
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <isExposed>false</isExposed>
+</LightningComponentBundle>
+
+Program Code (parentComponent4.html)
+<template>
+    <lightning-card>
+        <c-child-component4 ongetsearchevent={handleEvent}></c-child-component4>
+    </lightning-card>
+
+    <lightning-card>
+        Name: {name}
+    </lightning-card>
+    
+</template>
+
+Program Code (parentComponent4.js)
+import { LightningElement } from 'lwc';
+
+export default class ParentComponent4 extends LightningElement {
+    name='';
+
+    handleEvent(event)
+    {
+        this.name=event.detail;
+    }
+}
+
+Program Code (parentComponent4.js-meta.xml)
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__AppPage</target>
+    </targets>
+</LightningComponentBundle>
+
+
+
+
+
+
+
