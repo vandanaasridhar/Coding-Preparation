@@ -1,0 +1,122 @@
+<template>
+    <lightning-card title="Publisher Component">
+        <lightning-input label="Enter First Name" onchange={handleChangeFirstName}></lightning-input>
+        <lightning-input label="Enter Last Name" onchange={handleChangeLastName}></lightning-input>
+        <lightning-button label="Click Here" onclick={handleClick}></lightning-button>
+    </lightning-card>
+    
+import { MessageContext, publish } from 'lightning/messageService';
+import { LightningElement, wire } from 'lwc';
+import ComrevoChannel from '@salesforce/messageChannel/ComrevoChannel__c';
+
+export default class PublisherComponent extends LightningElement {
+    firstName='';
+    lastName='';
+    @wire (MessageContext) messageContext;
+    
+    handleChangeFirstName(event)
+    {
+        this.firstName=event.target.value;
+    }
+
+    handleChangeLastName(event)
+    {
+        this.lastName=event.target.value;
+    }
+
+    handleClick(event)
+    {
+        //code to pass message to subscribers
+        let payload={firstname:this.firstName, lastname:this.lastName};
+        publish(this.messageContext, ComrevoChannel, payload);
+    }
+}
+
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__AppPage</target>
+    </targets>
+</LightningComponentBundle>
+Program Code (subscriberComponent.html)
+<template>
+    <lightning-card title="Subscriber Component">
+        Hello {firstName} {lastName}!
+    </lightning-card>
+    
+</template>
+Program Code (subscriberComponent.js)
+import { MessageContext, subscribe, unsubscribe } from 'lightning/messageService';
+import { LightningElement, wire } from 'lwc';
+import ComrevoChannel from '@salesforce/messageChannel/ComrevoChannel__c';
+
+export default class SubscriberComponent extends LightningElement {
+    firstName='';
+    lastName='';
+    subscription=null;
+    @wire (MessageContext) messageContext;
+
+    connectedCallback()
+    {
+        this.handleSubscribe();
+    }
+
+    disconnectedCallback()
+    {
+        this.handleUnsubscribe()
+    }
+
+    handleSubscribe()
+    {
+        if(!this.subscription)
+        {
+            this.subscription=subscribe(this.messageContext, ComrevoChannel, 
+                (parameter)=>
+                {
+                    this.firstName=parameter.firstname;
+                    this.lastName=parameter.lastname;
+                }
+                );
+        }
+    }
+
+    handleUnsubscribe()
+    {
+        unsubscribe(this.subscription);
+        this.subscription=null;
+    }
+}
+
+Program Code (subscriberComponent.js-meta.xml)
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__AppPage</target>
+    </targets>
+</LightningComponentBundle>
+
+Program Code (ComrevoChannel.messageChannel-meta.xml)
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningMessageChannel xmlns="http://soap.sforce.com/2006/04/metadata">
+    
+    <isExposed>true</isExposed>
+    <description>This is Lightning Message Service</description>
+    <masterLabel>ComrevoChannel</masterLabel>
+
+    <lightningMessageFields>
+        <fieldName>firstname</fieldName>
+        <description>First Name of the Person</description>
+    </lightningMessageFields>
+
+    <lightningMessageFields>
+        <fieldName>lastname</fieldName>
+        <description>Last Name of the Person</description>
+    </lightningMessageFields>
+    
+</LightningMessageChannel>
+
+
