@@ -1,0 +1,72 @@
+CSS Selectors:
+1. By Tag
+e.g. querySelector(‘tagname’)
+2. By class name
+e.g. querySelector(‘.classname’)
+3. By Tag and class name
+e.g. querySelector(‘tagname.classname’)	
+
+Program Code (wireExample12.html)
+<template>
+    <lightning-card>
+        <div>Hello {fname} {lname}!</div>
+        <div>
+            <lightning-input name="firstname" label="Enter First Name" value="Parag" class="inputclass">
+            </lightning-input>
+        </div>
+        <div>
+            <lightning-input name="lastname" label="Enter Last Name" value="Jambhulkar" class="inputclass">
+            </lightning-input>
+        </div>
+        <div>    
+            <lightning-button label="Click Here" onclick={handleClick}></lightning-button>
+        </div>
+    </lightning-card>
+    
+</template>
+
+Program Code (wireExample12.css)
+.inputclass
+{
+    color:blue;
+}
+
+Program Code (wireExample.js)
+import { LightningElement } from 'lwc';
+
+export default class WireExample12 extends LightningElement {
+
+    fname='Parag';
+    lname='Jambhulkar';
+
+    handleClick(event)
+    {
+        var input=this.template.querySelectorAll('lightning-input');
+
+        input.forEach(function(element) 
+        {
+            if(element.name=="firstname")
+            {
+                this.fname=element.value
+            }
+            else if(element.name=="lastname")
+            {
+                this.lname=element.value
+            }
+        }
+        , this);
+    }
+}
+
+Program Code (wireExample.js-meta.xml)
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__HomePage</target>
+    </targets>
+</LightningComponentBundle>
+
+
+
