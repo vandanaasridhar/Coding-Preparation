@@ -1,0 +1,69 @@
+Program Code: (forEachLoop.html)
+<template>
+    <lightning-card>
+        <table class="slds-table slds-table_bordered">
+            <thead>
+                <tr>
+                    <td>First Name</td>
+                    <td>Last Name</td>
+                    <td>Age</td>
+                    <td>City</td>
+                </tr>
+            </thead>
+        <template for:each={employeeList} for:item="emp">
+            <tr key={emp.id}>
+            <td>{emp.Fname}</td>
+            <td>{emp.Lname}</td>
+            <td>{emp.Age}</td>
+            <td>{emp.City}</td>
+        </tr>
+        </template>
+    </table>
+    </lightning-card>
+    
+</template>
+
+Program Code: (helloWorld.js)
+import { LightningElement } from 'lwc';
+
+export default class ForEachLoop extends LightningElement {
+employee={
+    Fname:'Parag',
+    Lname:'Jambhulkar',
+    Age:35,
+    City:'Pune'
+}
+
+employeeList=[
+    {
+    Fname:'Parag',
+    Lname:'Jambhulkar',
+    Age:35,
+    City:'Pune'
+    },
+    {
+        Fname:'Mayur',
+        Lname:'Chavan',
+        Age:34,
+        City:'Jalgaon'
+    },
+    {
+        Fname:'Yogesh',
+        Lname:'Handge',
+        Age:37,
+        City:'Nashik'
+    }
+]
+
+}
+
+Program Code: (helloWorld.js-meta.xml)
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>57.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__AppPage</target>
+        <target>lightning__HomePage</target>
+    </targets>
+</LightningComponentBundle>
