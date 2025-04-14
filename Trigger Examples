@@ -1,0 +1,39 @@
+Example 1:
+trigger StudentTrigger1 on Student__c (before insert) 
+{
+	System.debug('Student Trigger 1 is called');
+}
+
+Example 2:
+trigger StudentTrigger1 on Student__c (before insert) 
+{
+	//System.debug('Student Trigger 1 is called');
+	for(Student__C record:Trigger.new)
+    {
+        if(String.isBlank(record.Dept__c))
+        {
+            record.Dept__c='Other';
+        }
+    }
+}
+
+Example 3:
+trigger StudentTrigger1 on Student__c (before insert, before update) 
+{
+	//System.debug('Student Trigger 1 is called');
+	for(Student__C record:Trigger.new)
+    {
+        if(String.isBlank(record.Dept__c))
+        {
+            record.addError('Department field is blank');
+        }
+        
+    }
+}
+
+
+
+
+
+
+
