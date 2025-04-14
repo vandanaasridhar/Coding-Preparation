@@ -1,0 +1,56 @@
+Examples:
+Program Code (wireExample9.html)
+<template>
+    <lightning-card title="Example: Decorate Function with Wire">
+        <template if:true={accounts}>
+        <div>Name: {getName}</div>
+        <div>Phone: {getPhone}</div>
+        </template>
+    </lightning-card>
+</template>
+
+Program Code (wireExample9.js)
+import { getRecord } from 'lightning/uiRecordApi';
+import { LightningElement, wire, api, track } from 'lwc';
+
+export default class WireExample9 extends LightningElement {
+    @api recordId;
+    @track error;
+    @track accounts;
+
+    @wire (getRecord, {recordId:'$recordId', fields:['Account.Name', 'Account.Phone']}) 
+    wiredAccounts({data, error})
+    {
+        if(data)
+        {
+            this.accounts=data;
+            this.error=undefined;
+        }
+        else if(error)
+        {
+            this.accounts=undefined;
+            this.error=error;
+        }
+    }
+
+    get getName()
+    {
+        return this.accounts.fields.Name.value;
+    }
+
+    get getPhone()
+    {
+        return this.accounts.fields.Phone.value;
+    }
+
+}
+
+Program Code (wireExample9.js-meta.xml)
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>57.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__RecordPage</target>
+    </targets>
+</LightningComponentBundle>
