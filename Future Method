@@ -1,0 +1,64 @@
+Program Code:
+public class FutureExample1 { 
+    
+    @future
+    public static void updateRecords()
+    {
+        List<Lead> records=[SELECT FirstName, LastName, Company, Status FROM LEAD WHERE FirstName='Parag' AND LastName='Jambhulkar'];
+        
+        for(Lead record: records)
+        {
+            record.status='Working - Contacted';
+        }
+        
+        update records;
+    }
+
+    @future
+    public static void insertRecords()
+    {
+        Lead record1=new Lead(FirstName='Parag', LastName='Jambhulkar', Company='Infosys', Status='Open - Not Contacted');
+        insert record1;
+    }
+}
+
+Anonymous Window:
+System.debug('Future Method Example');
+
+FutureExample1.updateRecords();
+
+FutureExample1.insertRecords();
+
+Example 2 
+Program Code:
+public class FutureExample2 { 
+    @future
+    public static void updateRecords(Set<Id> recordsId)
+    {
+        List<Lead> records=[SELECT FirstName, LastName, Company, Status FROM LEAD WHERE Id IN :recordsId];
+       
+        for(Lead record: records)
+        {
+            record.company='PICT';
+        }
+        
+        update records;
+    }
+
+    @future
+    public static void insertRecords()
+    {
+        Lead record1=new Lead(FirstName='Parag', LastName='Jambhulkar', Company='Infosys', Status='Open - Not Contacted');
+        insert record1;
+    }
+     
+}
+
+Anonymous Window:
+System.debug('Future Method Example');
+
+Map<Id, Lead> recordMap=new Map<Id, Lead>([SELECT FirstName, LastName, Company, Status FROM LEAD]);
+
+FutureExample2.updateRecords(recordMap.keySet());
+
+FutureExample2.insertRecords();
