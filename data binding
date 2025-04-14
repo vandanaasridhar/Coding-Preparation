@@ -1,0 +1,43 @@
+Data Binding in LWC
+	Data Binding is the process by which values are bounded to the properties.
+
+Example 1:
+Program Code: (helloWorld.html)
+<template>
+    <lightning-card>
+
+        <div>Hello {fname} {lname}</div>
+        <h1>Hello World</h1>
+    </lightning-card>
+</template>
+
+Program Code: (helloWorld.js)
+import { LightningElement } from 'lwc';
+export default class HelloWorld extends LightningElement {
+fname='Parag';
+lname='Jambhulkar';
+}
+Example 2:
+How to bind values to properties from Object
+Program Code: (helloWorld.html)
+<template>
+    <lightning-card>
+
+        <div>Hello {employee.Fname} {employee.Lname}</div>
+        <div>Age: {employee.Age}</div>
+        <div>City: {employee.City}</div>
+        <h1>Hello World</h1>
+    </lightning-card>
+</template>
+
+Program Code: (helloWorld.js)
+import { LightningElement } from 'lwc';
+
+export default class HelloWorld extends LightningElement {
+    employee={
+        Fname:'Parag',
+        Lname:'Jambhulkar',
+        Age:35,
+        City:'Pune'
+        }
+}
