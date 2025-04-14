@@ -1,0 +1,90 @@
+Program Code (childComponent4.html)
+<template>
+    <lightning-card>
+        <lightning-input label="Enter First Name" onchange={handleChangeFirstName}></lightning-input>
+        <lightning-input label="Enter Last Name" onchange={handleChangeLastName}></lightning-input>
+        <lightning-button label="Click Here" onclick={handleClick}></lightning-button>
+
+    </lightning-card>
+    
+</template>
+
+Program Code (childComponent4.js)
+import { LightningElement } from 'lwc';
+
+export default class ChildComponent4 extends LightningElement {
+    firstname='';
+    lastname='';
+
+    handleChangeFirstName(event)
+    {
+        this.firstname=event.target.value; 
+    }
+    handleChangeLastName(event)
+    {
+        this.lastname=event.target.value;
+    }
+
+    handleClick(event)
+    {
+        const searchEvent=new CustomEvent('getsearchevent',
+        {detail:{FirstName:this.firstname,
+                LastName:this.lastname
+                }
+        
+        });
+
+        this.dispatchEvent(searchEvent);
+    }
+}
+
+Program Code (childComponent4.js-meta.xml)
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <isExposed>false</isExposed>
+</LightningComponentBundle>
+
+Program Code (parentComponent4.html)
+<template>
+    <lightning-card>
+        <c-child-component4 ongetsearchevent={handleEvent}></c-child-component4>
+    </lightning-card>
+
+    <lightning-card>
+        <div>First Name: {firstname}</div>
+        <div>Last Name: {lastname}</div>
+    </lightning-card>
+    
+</template>
+
+Program Code (parentComponent4.js)
+import { LightningElement } from 'lwc';
+
+export default class ParentComponent4 extends LightningElement {
+    firstname='';
+    lastname='';
+
+    handleEvent(event)
+    {
+        this.firstname=event.detail.FirstName;
+        this.lastname=event.detail.LastName;
+    }
+}
+
+Program Code (parentComponent4.js-meta.xml)
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__AppPage</target>
+    </targets>
+</LightningComponentBundle>
+
+
+
+
+
+
+
