@@ -1,0 +1,23 @@
+Scenario -2
+Apex Handler :
+public class CopyBillingToShippingClass{
+public staꢀc void copyBillingToShippingFunc(List<Account>incomingRecords){
+for(Account acc : incomingRecords ){
+if(acc.BillingToShippingCheckbox__c==true){
+acc.ShippingStreet=acc.BillingStreet;
+acc.ShippingCity=acc.BillingCity;
+acc.ShippingState=acc.BillingState;
+acc.ShippingPostalCode=acc.BillingPostalCode;
+accc.ShippingCountry=acc.BillingCountry;
+}
+}
+}
+}
+Trigger:
+trigger CopyBillingToShippingTrigger on Account (Before Insert){
+if(Trigger.isInsert && Trigger.isBefore){
+CopyBillingToShippingClass.copyBillingToShippingFunc(Trigger.New);
+}
+}
+Scenario: When an account inserts and CopyBillingToShipping (CustomField) checkbox is checked
+then automaꢀcally copy accountbilling address into account shipping address.
