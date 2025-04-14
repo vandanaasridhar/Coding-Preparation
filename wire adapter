@@ -1,0 +1,44 @@
+Program Code (wireExample3.html)
+<template>
+    <lightning-card title="Wire Decorator Example">
+        <div>Name: {getName}</div>
+        <div>Phone: {getPhone}</div>
+    </lightning-card>
+</template>
+
+Program Code (wireExample3.js)
+import { getFieldValue, getRecord } from 'lightning/uiRecordApi';
+import { LightningElement, api, wire } from 'lwc';
+
+export default class WireExample3 extends LightningElement {
+    @api recordId;
+
+    @wire (getRecord, {recordId:'$recordId', fields:['Account.Name', 'Account.Phone']}) 
+    accounts;
+
+    get getName()
+    {
+        if(this.accounts.data)
+            return getFieldValue(this.accounts.data, 'Account.Name');
+        else if(this.accounts.error)
+            return this.accounts.error;
+    }
+
+    get getPhone()
+    {
+        if(this.accounts.data)
+            return getFieldValue(this.accounts.data, 'Account.Phone');
+        else if(this.accounts.error)
+            return this.accounts.error;
+    }
+}
+
+Program Code (wireExample3.js-meta.xml)
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>57.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__RecordPage</target>
+    </targets>
+</LightningComponentBundle>
