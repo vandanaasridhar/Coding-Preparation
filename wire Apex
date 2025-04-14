@@ -1,0 +1,48 @@
+Program Code (AccountHelper3.cls)
+public with sharing class AccountHelper3 {
+    @AuraEnabled(cacheable=true)
+    public static List<Account> getAccountList(Id accId){
+        try {
+            return [SELECT Name, Phone FROM Account WHERE Id=: accId];
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }   
+}
+
+Program Code (wireExample7.html)
+<template>
+    <lightning-card title="Wire Decorator to call Apex Method">
+        <template if:true={accounts.data}>
+            <template for:each={accounts.data} for:item="acc">
+                <div key={acc.id}>
+                <div>Name: {acc.Name}</div>
+                <div>Phone: {acc.Phone}</div>
+                </div>
+            </template>
+            <template if:true={accounts.error}>
+                {accounts.error}
+            </template>
+        </template>
+    </lightning-card>
+    
+</template>
+
+Program Code (wireExample7.js)
+import { LightningElement, wire, api } from 'lwc';
+import getAccountList from '@salesforce/apex/AccountHelper3.getAccountList';
+
+export default class WireExample7 extends LightningElement {
+    @api recordId;
+    @wire (getAccountList, {accId:'$recordId'}) accounts;
+}
+
+Program Code (wireExample7.js-meta.xml)
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>57.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__RecordPage</target>
+    </targets>
+</LightningComponentBundle>
