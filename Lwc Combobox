@@ -1,0 +1,31 @@
+<!-- exampleCombobox.html -->
+<template>
+    <lightning-card title="Combobox Example">
+        <lightning-combobox
+            name="example"
+            label="Select an Option"
+            value={selectedValue}
+            options={options}
+            onchange={handleChange}>
+        </lightning-combobox>
+
+        <p class="slds-m-top_medium">You selected: {selectedValue}</p>
+    </lightning-card>
+</template>
+
+// exampleCombobox.js
+import { LightningElement } from 'lwc';
+
+export default class ExampleCombobox extends LightningElement {
+    selectedValue = '';
+
+    options = [
+        { label: 'Option 1', value: 'option1' },
+        { label: 'Option 2', value: 'option2' },
+        { label: 'Option 3', value: 'option3' }
+    ];
+
+    handleChange(event) {
+        this.selectedValue = event.detail.value;
+    }
+}
