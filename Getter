@@ -1,0 +1,31 @@
+Example 1:
+Program Code: (helloWorld.html)
+<template>
+    <lightning-card>
+
+        <div>Hello {employee.Fname} {employee.Lname}</div>
+        <div>Age: {employee.Age}</div>
+        <div>City: {employee.City}</div>
+        <div>Rank: {getEmployeeRank}</div>
+        <h1>Hello World</h1>
+    </lightning-card>
+</template>
+
+Program Code: (helloWorld.js)
+import { LightningElement } from 'lwc';
+
+export default class HelloWorld extends LightningElement {
+    employee={
+        Fname:'Parag',
+        Lname:'Jambhulkar',
+        Age:35,
+        City:'Pune'
+        }
+
+        get getEmployeeRank()
+        {
+            const rank = this.employee.Age>=50?'One':this.employee.Age>30?'Second':'Third';
+            return rank;
+        }
+}
+
