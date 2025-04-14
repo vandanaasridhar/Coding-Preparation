@@ -1,0 +1,80 @@
+Program Code: (iteratorLoop.html)
+<template>
+    <lightning-card>
+        <h1>Ierator Example</h1>
+        <table class="slds-table slds-table_bordered">
+            <thead>
+                <tr>
+                    <td>First Name</td>
+                    <td>Last Name</td>
+                    <td>Age</td>
+                    <td>City</td>
+                </tr>
+            </thead>
+        <template iterator:emp={employeeList}>
+            <template if:true={emp.first}>
+            <tr key={emp.value.id}>
+            <td>{emp.value.Fname}</td>
+            <td>{emp.value.Lname}</td>
+            <td>{emp.value.Age}</td>
+            <td>{emp.value.City}</td>
+            </tr>
+            </template>
+            <template if:true={emp.last}>
+                <tr key={emp.value.id}>
+                <td>{emp.value.Fname}</td>
+                <td>{emp.value.Lname}</td>
+                <td>{emp.value.Age}</td>
+                <td>{emp.value.City}</td>
+                </tr>
+                </template>
+        </template>
+    </table>
+    </lightning-card>
+    
+</template>
+
+Program Code: (iteratorLoop.js)
+import { LightningElement } from 'lwc';
+
+export default class IteratorLoop extends LightningElement {
+
+    employee={
+        Fname:'Parag',
+        Lname:'Jambhulkar',
+        Age:35,
+        City:'Pune'
+    }
+    
+    employeeList=[
+        {
+            Fname:'Parag',
+            Lname:'Jambhulkar',
+            Age:35,
+            City:'Pune'
+        },
+        {
+            Fname:'Mayur',
+            Lname:'Chavan',
+            Age:34,
+            City:'Jalgaon'
+        },
+        {
+            Fname:'Yogesh',
+            Lname:'Handge',
+            Age:37,
+            City:'Nashik'
+        }
+    ]
+}
+
+Program Code: (iteratorLoop.js-meta.xml)
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>57.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__AppPage</target>
+        <target>lightning__HomePage</target>
+    </targets>
+</LightningComponentBundle>
