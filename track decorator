@@ -1,0 +1,42 @@
+Program Code (trackExample.html)
+<template>
+    <lightning-card>
+        <div>Counter={counter}</div>
+        <div>
+            <lightning-button label="+" onclick={increment}></lightning-button>
+        </div>
+        <div>
+            <lightning-button label="-" onclick={decrement}></lightning-button>
+        </div>
+    </lightning-card>
+</template>
+
+Program Code (trackExample.js)
+import { LightningElement, track } from 'lwc';
+
+export default class TrackExample extends LightningElement {
+
+    @track counter=0;
+
+    increment()
+    {
+        this.counter++;
+    }
+
+    decrement()
+    {
+        this.counter--;
+    }
+}
+
+Program Code (trackExample.js-meta.xml)
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>57.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__AppPage</target>
+        <target>lightning__HomePage</target>
+    </targets>
+</LightningComponentBundle>
+
