@@ -1,0 +1,19 @@
+global class BatchExample implements Database.Batchable<SObject>{
+    global Database.QueryLocator start(Database.BatchableContext bc){
+      return Database.getQueryLocator([Select Id, Name from Account ]);
+
+    }
+    global void execute (Database.BatchableContext bc, List<Account> accList){
+        try{      
+            for(Account records:accList){
+                records.Name = records.Name+'Updated';
+            }
+        }catch(Exception e){
+                System.debug('Error updating records: '+e.getMessage());
+        }
+        update accList;
+    }
+    global void finish (Database.BatchableContext bc){
+        System.debug('execution is completed');
+    }
+}
